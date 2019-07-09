@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fba7ff68-753f-4162-b92b-ed54902bd841" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/px4_ros.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/px4_ros.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/lidar_test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/turtlebot_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/turtlebot_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/2dlidar.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/turtlebot_test.py" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -12,27 +13,54 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="DockManager">
+    <window id="2">
+      <content type="file-editors">
+        <state>
+          <leaf>
+            <file pinned="false" current-in-tab="true">
+              <entry file="file://$PROJECT_DIR$/scripts/turtle_posctrl.py">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state relative-caret-position="145">
+                    <caret line="35" lean-forward="true" selection-start-line="35" selection-end-line="35" />
+                    <folding>
+                      <element signature="e#1#13#0" expanded="true" />
+                    </folding>
+                  </state>
+                </provider>
+              </entry>
+            </file>
+          </leaf>
+        </state>
+      </content>
+    </window>
+    <window id="1">
+      <content type="file-editors">
+        <state>
+          <leaf>
+            <file pinned="false" current-in-tab="true">
+              <entry file="file://$PROJECT_DIR$/scripts/lidar_process.py">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state relative-caret-position="928">
+                    <caret line="67" lean-forward="true" selection-start-line="67" selection-end-line="67" />
+                  </state>
+                </provider>
+              </entry>
+            </file>
+          </leaf>
+        </state>
+      </content>
+    </window>
+  </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/scripts/2dlidar.py">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/scripts/tangent_bug_turtle.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1755">
-              <caret line="73" column="116" selection-start-line="70" selection-start-column="34" selection-end-line="73" selection-end-column="116" />
+            <state relative-caret-position="493">
+              <caret line="124" lean-forward="true" selection-start-line="124" selection-end-line="124" />
               <folding>
                 <element signature="e#23#35#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/scripts/turtlebot_test.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="351">
-              <caret line="92" lean-forward="true" selection-start-line="92" selection-end-line="92" />
-              <folding>
-                <element signature="e#1#13#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -57,6 +85,9 @@
       <find>quater</find>
       <find>arctan2</find>
       <find>linalg</find>
+      <find>send_vel</find>
+      <find>target_pos</find>
+      <find>current</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -91,14 +122,20 @@
         <option value="$PROJECT_DIR$/scripts/teleop.py" />
         <option value="$PROJECT_DIR$/launch/vel_control_px4.launch" />
         <option value="$PROJECT_DIR$/scripts/offboard_comm.py" />
-        <option value="$PROJECT_DIR$/scripts/2dlidar.py" />
         <option value="$PROJECT_DIR$/scripts/turtlebot_test.py" />
+        <option value="$PROJECT_DIR$/scripts/2dlidar.py" />
+        <option value="$PROJECT_DIR$/scripts/lidar_test.py" />
+        <option value="$PROJECT_DIR$/scripts/tangentbug.py" />
+        <option value="$PROJECT_DIR$/scripts/turtle_posctrl.py" />
+        <option value="$PROJECT_DIR$/scripts/tangent_bug.py" />
+        <option value="$PROJECT_DIR$/scripts/lidar_process.py" />
+        <option value="$PROJECT_DIR$/scripts/tangent_bug_turtle.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="277" />
-    <option name="y" value="106" />
+    <option name="x" value="1610" />
+    <option name="y" value="508" />
     <option name="width" value="2015" />
     <option name="height" value="1218" />
   </component>
@@ -107,6 +144,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -128,12 +166,11 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../tangentbug" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunDashboard">
@@ -148,7 +185,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.turtlebot_test">
+  <component name="RunManager" selected="Python.tangent_bug_turtle">
     <configuration name="2dlidar" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="px4_ros" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -191,7 +228,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="posctrl" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="tangent_bug_turtle" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="px4_ros" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -203,7 +240,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/scripts/posctrl.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/scripts/tangent_bug_turtle.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -256,11 +293,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.tangent_bug_turtle" />
         <item itemvalue="Python.turtlebot_test" />
         <item itemvalue="Python.2dlidar" />
         <item itemvalue="Python.keytest" />
         <item itemvalue="Python.zed_node" />
-        <item itemvalue="Python.posctrl" />
       </list>
     </recent_temporary>
   </component>
@@ -295,20 +332,21 @@
     </history-entry>
   </component>
   <component name="ToolWindowManager">
-    <frame x="277" y="106" width="2015" height="1218" extended-state="0" />
+    <frame x="1629" y="562" width="2015" height="1218" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17163049" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17118473" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.2467033" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.2463899" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.3998195" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="8" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.32942238" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Python Console" order="10" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -478,20 +516,71 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/turtlebot_test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="348">
+          <caret line="120" column="20" lean-forward="true" selection-start-line="120" selection-start-column="20" selection-end-line="120" selection-end-column="20" />
+          <folding>
+            <element signature="e#1#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/scripts/2dlidar.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1755">
-          <caret line="73" column="116" selection-start-line="70" selection-start-column="34" selection-end-line="73" selection-end-column="116" />
+        <state relative-caret-position="116">
+          <caret line="4" column="18" lean-forward="true" selection-end-line="4" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/tangentbug.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="725">
+          <caret line="25" column="24" lean-forward="true" selection-start-line="25" selection-start-column="24" selection-end-line="25" selection-end-column="24" />
           <folding>
             <element signature="e#23#35#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/turtlebot_test.py">
+    <entry file="file://$PROJECT_DIR$/scripts/tangent_bug.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="351">
-          <caret line="92" lean-forward="true" selection-start-line="92" selection-end-line="92" />
+        <state relative-caret-position="145">
+          <caret line="5" column="34" selection-start-line="5" selection-start-column="34" selection-end-line="5" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/lidar_test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="261">
+          <caret line="9" column="11" lean-forward="true" selection-start-line="9" selection-start-column="11" selection-end-line="9" selection-end-column="11" />
+          <folding>
+            <element signature="e#23#35#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/lidar_process.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="928">
+          <caret line="67" lean-forward="true" selection-start-line="67" selection-end-line="67" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/tangent_bug_turtle.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="493">
+          <caret line="124" lean-forward="true" selection-start-line="124" selection-end-line="124" />
+          <folding>
+            <element signature="e#23#35#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/turtle_posctrl.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="145">
+          <caret line="35" lean-forward="true" selection-start-line="35" selection-end-line="35" />
           <folding>
             <element signature="e#1#13#0" expanded="true" />
           </folding>
