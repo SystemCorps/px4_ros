@@ -17,7 +17,7 @@ class BugTurtle:
     def __init__(self):
 
         self.goalVisible = False
-        self.discThresh = 3.5
+        self.discThresh = 0.2
 
         # LiDAR
         self.width = 0.65
@@ -27,9 +27,11 @@ class BugTurtle:
         self.obs_dist_thresh = 0.4
         self.Maginot = 0.3
         self.front_deg = 45
-        self.front_obs_search = [5, 75]
+        self.front_obs_search = [5, 35]
         self.goal_thresh = 0.1
         self.isReach = False
+        self.candidates = []
+        self.filtered_data = np.zeros(360)
 
         # Simulation
         self.gazebo_sub = rospy.Subscriber('/gazebo/model_states', ModelStates, self.gazebo_callback)
@@ -42,7 +44,8 @@ class BugTurtle:
         self.desired_vel.linear.x = 0
         self.desired_vel.angular.y = 0
         self.maxLinVel = 0.2
-        self.maxYawVel = 1.2
+        self.maxYawVel = 0.5
+        self.only_yaw = np.pi / 4
 
 
         # relative position
@@ -54,6 +57,42 @@ class BugTurtle:
 
 
 
+
+    def scan_possible(self, dist=1.0, limit=0.65, ret=False):
+        temp = np.arctan2(dist, limit)
+        theta = np.pi/2 - temp
+        theta_deg = np.rad2deg(theta)
+        theta_int = int(math.ceil(theta_deg))
+
+
+        possible_head = []
+        for i in range(len(self.lidar_data.ranges)):
+            if i < theta_int:
+                scan_pos = self.filtered_data[:theta_int+i+1]
+                scan_neg = self.filtered_data[-(theta_int-i):]
+                scan = np.concatenate((scan_neg, scan_pos), axis=None)
+
+
+            elif i >= theta_int and i < len(self.lidar_data.ranges)-theta_int:
+                scan = self.filtered_data[(i-theta_int):(i+theta_int+1)]
+
+            else:
+                scan_pos = self.filtered_data[(i-theta_int):]
+                scan_neg = self.filtered_data[:theta_int-(360-i)+1]
+                scan = np.concatenate((scan_pos, scan_neg), axis=None)
+
+            #self.scantest.append(scan)
+            min_dist = np.amin(scan)
+            if min_dist >= dist+limit:
+                avg_dist = np.mean(scan)
+                possible_head.append([i, min_dist])
+
+        self.candidates = possible_head
+
+        if ret:
+            return possible_head
+
+
     def gazebo_callback(self, data):
         self.burger_pos = data.pose[-1]
         self.current_yaw = euler_from_quaternion([self.burger_pos.orientation.x,
@@ -63,6 +102,12 @@ class BugTurtle:
 
     def lidar_callback(self, data):
         self.lidar_data = data
+
+        for i in range(len(self.lidar_data.ranges)):
+            if self.lidar_data.ranges[i] == 0.0 or self.lidar_data.ranges[i] == np.inf:
+                self.filtered_data[i] = self.lidar_max
+            else:
+                self.filtered_data[i] = self.lidar_data.ranges[i]
 
 
     def send_vel(self):
@@ -111,6 +156,22 @@ class BugTurtle:
                 besti = 0
                 bestDist = 10.0
 
+                possibles = self.scan_possible(dist=1.0, limit=0.2, ret=True)
+
+                if len(possibles) > 0:
+                    for i in range(len(possibles)):
+                        dAng = np.deg2rad(possibles[i][0])
+                        discDist = possibles[i][1]
+                        xDist = discDist * np.sin(dAng)
+                        yDist = discDist * np.cos(dAng)
+                        xyDist = np.array([xDist, yDist])
+                        heurDist = np.linalg.norm(self.rel_pos - xyDist)
+                        if (heurDist + discDist) < bestDist:
+                            bestDist = heurDist + discDist
+                            bestAngle = dAng
+                            besti = int(possibles[i][0])
+
+                """
                 for i in range(len(self.lidar_data.ranges)):
                     if ( i > 0) and (abs(self.lidar_data.ranges[i] - self.lidar_data.ranges[i-1]) > self.discThresh):
                         discDist = self.lidar_data.ranges[i]
@@ -127,16 +188,31 @@ class BugTurtle:
                             bestDist = heurDist + discDist
                             bestAngle = dAng
                             besti = i
+                """
 
                 yaw_err = bestAngle - self.current_yaw
-                print(bestAngle, yaw_err)
-
+                print(bestAngle, besti)
+                """
                 if abs(bestAngle) >= self.maxYawVel / 2:
                     self.desired_vel.linear.x = self.maxLinVel
                     self.desired_vel.angular.z = np.sign(bestAngle) * self.maxYawVel
                 elif abs(bestAngle) < self.maxYawVel / 2:
                     self.desired_vel.linear.x = self.maxLinVel
                     self.desired_vel.angular.z = self.maxYawVel * bestAngle / (self.maxLinVel / 2)
+                 """
+                if bestAngle == 0:
+                    self.desired_vel.linear.x = self.maxLinVel
+                    self.desired_vel.angular.z = 0
+                    print("a")
+                elif abs(bestAngle) >= self.only_yaw:
+                    self.desired_vel.linear.x = 0
+                    self.desired_vel.angular.z = np.sign(bestAngle) * self.maxYawVel
+                    print("b")
+                else:
+                    self.desired_vel.linear.x = self.maxLinVel
+                    self.desired_vel.angular.z = np.sign(bestAngle) * self.maxYawVel
+                    print("c")
+
 
 
                 # Obstacle avoidance
@@ -144,30 +220,36 @@ class BugTurtle:
                     if self.lidar_data.ranges[besti+10] < self.obs_dist_thresh:
                         self.desired_vel.linear.x = self.maxLinVel
                         self.desired_vel.angular.z = self.maxYawVel
+                        print("d")
                     elif self.lidar_data.ranges[besti-10] < self.obs_dist_thresh:
                         self.desired_vel.linear.x = self.maxLinVel
                         self.desired_vel.angular.z = -self.maxYawVel
+                        print("e")
 
 
-            j = int(len(self.lidar_data.ranges) / 2) - self.front_obs_search[1]
-            m = int(len(self.lidar_data.ranges) / 2) - self.front_obs_search[0]
-            k = int(len(self.lidar_data.ranges) / 2) + self.front_obs_search[1]
-            n = int(len(self.lidar_data.ranges) / 2) + self.front_obs_search[0]
+            j = int(len(self.lidar_data.ranges) / 4) - self.front_obs_search[1]
+            m = int(len(self.lidar_data.ranges) / 4) - self.front_obs_search[0]
+            k = int(len(self.lidar_data.ranges) / 4) + self.front_obs_search[1]
+            n = int(len(self.lidar_data.ranges) / 4) + self.front_obs_search[0]
 
             for i in range(j, m):
                 if self.lidar_data.ranges[i] < self.Maginot:
                     self.desired_vel.linear.x = 0
                     self.desired_vel.angular.z = self.maxYawVel
+                    print("f")
 
             for i in range(n, k):
                 if self.lidar_data.ranges[i] < self.Maginot:
                     self.desired_vel.linear.x = 0
                     self.desired_vel.angular.z = -self.maxYawVel
+                    print("g")
 
             if dist2goal <= self.goal_thresh:
                 self.desired_vel.linear.x = 0
                 self.desired_vel.angular.z = 0
                 self.isReach = True
+
+            print("vel", self.desired_vel.angular.z, self.desired_vel.linear.x)
 
             bugLoop.sleep()
 
@@ -185,7 +267,7 @@ def main():
         loop.sleep()
 
 
-    goal1 = [1,-1]
+    goal1 = [6,-1]
     goal2 = [2,4]
 
     while not bug.isReach:
