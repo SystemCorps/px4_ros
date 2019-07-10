@@ -112,7 +112,7 @@ class Lidar:
         self.candidates = possible_head
 
         if ret:
-            return possible_head
+            return np.array(possible_head)
 
 
 
