@@ -3,7 +3,9 @@
 import rospy
 import numpy as np
 from pymavlink import mavutil
+from tf.transformations import euler_from_quaternion
 from offboard_comm import *
+from lidar_process import *
 
 
 def main():
@@ -11,18 +13,47 @@ def main():
 
     print("node started")
     agent = OffboardCtrl()
+    lidar = Lidar()
     print("Class loaded")
-    agent.wait_for_topics(20)
+    agent.wait_for_topics(1)
     print("Topic loaded")
 
     # pose
     # Yaw, X, Y, Z
+    # Waypoints
     pos_takeoff = [0, 0, 0, 2]
-    pos1 = [0, -5, 3, 2]
+    pos1 = [0, 3, 0, 0]
     pos2 = [0, 1, 1, -0.5]
     pos3 = [0, -3, -2, 1.5]
     loop_rate = rospy.Rate(10)
-
+      
+        
+    while not rospy.is_shutdown():
+        # Possible direction & distance - drone coordinate
+        # Set step 1 m, drone radius 0.65 m
+        possibles = lidar.scan_possible(dist=2.0, limit=0.73, ret=True)
+        
+        relx = pos1[1] - agent.local_position.pose.position.x
+        rely = pos1[2] - agent.local_position.pose.position.y
+        rel_pos = np.array([relx, rely])
+        
+        rel_yaw = np.arctan2(rel_pos[1], rel_pos[0])
+        current_yaw = euler_from_quaternion([agent.local_position.pose.orientation.x, agent.local_position.pose.orientation.y, agent.local_position.pose.orientation.z, agent.local_position.pose.orientation.w])[2]
+        
+        directions = np.deg2rad(possibles[:,0])
+        dir_errs = directions - rel_yaw
+        straight_flag = False
+        if np.amin(dir_errs) < np.deg2rad(5.0):
+            straight_flag = True
+            
+        print(np.rad2deg(np.amin(dir_errs)), straight_flag, len(directions))
+        
+        loop_rate.sleep()
+        
+    
+        
+    
+    """
     print("Test trajectories")
 
     # agent.set_mode_srv(custom_mode='OFFBOARD')
@@ -60,6 +91,7 @@ def main():
     print("Landing done")
 
     agent.set_arming_srv(False)
+    """
 
 
 if __name__ == '__main__':
